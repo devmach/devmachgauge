@@ -1,0 +1,7 @@
+What's "devmachGauge" ?
+
+devmachGauge is a html5 canvas gadget for drawing simple gauges. It works with Firefox, 
+Chrome and maybe some other browsers ( but not with IE. However, you may try your chance 
+with IE + excanvas ). 
+
+Coded on 21.07.2010, GitHub Releasee on 29.01.2011...

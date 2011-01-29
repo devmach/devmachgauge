@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>devmachGauge - Html5 Canvas Gauge</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1254">
+<meta http-equiv="EXPIRES" content="0">
+<meta name="RESOURCE-TYPE" content="DOCUMENT">
+<meta name="DISTRIBUTION" content="GLOBAL">
+<meta name="AUTHOR" content="Aydin /dev/mach/ Ulf">
+<meta name="DESCRIPTION" content="A simple gauge with html5 canvas and javascript">
+<meta name="REVISIT-AFTER" content="1 DAYS">
+
+<style type="text/css">
+body{ font-size: 12px;}
+</style>
+
+
+
+<head>
+   <script type="text/javascript" src="devmachGauge.js"></script>
+   <script type='text/javascript'>
+   
+      var i = [];
+      var hedef = [] ;
+      var sayacZ = [];
+      var renkler = [ '#9ECAE1', '#FED98E', '#FE9929' ];
+      var devmachGauge = new devmachGauge();
+         
+      function draw(q){
+         if( i[q] == hedef[q] ) return;
+         var deger = ( hedef[q] > i[q]) ? i[q]++ : i[q]--; 
+         devmachGauge.draw('gauge'+q,  i[q],renkler[q % 3]);
+         sayacZ[q] = setTimeout("draw("+ q +")", 10);
+
+      }
+      
+      function read(){  
+
+         for( m=0; m<3; m++){
+            if( i[m] == null ) i[m] = 0;
+            hedef[m] = 1+( Math.floor(Math.random()*100) );
+            document.getElementById('label'+ m).innerHTML = "New Value = " + hedef[m] + "%";                     
+            draw(m);
+         }
+
+         
+         var min = -100 +( Math.floor(Math.random()*100) );
+         var max =  101 +( Math.floor(Math.random()*100) );
+         var val =  1   +( Math.floor(Math.random()*100) ); 
+
+         var percCalc = devmachGauge.percCalc(min, max, val);
+         devmachGauge.draw('gaugeC', percCalc ,'#99FF00');  
+         document.getElementById('labelC').innerHTML = ['Min : ',min, ', Max: ', max , ', Value: ', val, '<br/>Calculated Percentage = ', percCalc, ' %'].join('');         
+      }
+
+   </script>   
+</head>
+<body onload="read();">
+
+<div style="float:left; width:600px">
+<h2>* What's "devmachGauge" ?</h2>
+devmachGauge is a html5 canvas gadget for drawing simple gauges. It works with Firefox, Chrome and maybe some other browsers ( but not with IE. However, you may try your chance with IE + excanvas ).
+
+<h2>* Why?</h2>
+Because Html5 looks promising and i had free time to play with.
+
+<h2>* How to start to use ?</h2>
+Just <a href="devmachGauge.js">download devmachGauge.js</a> and include this .js file into your page. Then create new "<b>devmachGauge</b>" object. Now you can use draw function of this object.
+<pre>
+      <b>Sample code :</b></br>
+      &lt;script type=&quot;text/javascript&quot; src=&quot;devmachGauge.js&quot;&gt;&lt;/script&gt;
+      &lt;script type=&#39;text/javascript&#39;&gt;
+         var devmachGauge = new devmachGauge();
+         devmachGauge.draw(&#39;IDofCanvas&#39;, 87 ,&#39;#6699CC&#39;);
+      &lt;/script&gt;
+      
+      &lt;canvas id=&quot;IDofCanvas&quot; width=&quot;100&quot; height=&quot;55&quot;&gt;&lt;/canvas&gt;
+      <br/>
+      <b>Sample output :</b>
+      <img src="devmachGauge_sample.png" />
+</pre>
+<h2>* Defined functions</h2>
+
+<pre><i><b>devmachGauge.deg2rad(degree)</b></i></pre>
+Converts given degree to radian. Returs float.
+
+<pre><i><b>devmachGauge.hex2rgba(hex)</b></i></pre>
+Converts given hex value to css rgaba string with alpha value 1.  Returns string.
+
+<pre><i><b>devmachGauge.percCalc(min,max,val)</b></i></pre>
+devmachGauge works with percentage. If you have minimum, maximum and the current value you don't need to calculate it yourself. Just use this function to calculate it. Returns integer.
+
+<pre><i><b>devmachGauge.draw(canvasID, newValue, gaugeColor, arrowColor, backgroundColor)</b></i></pre>
+This is where the magic starts. This function draw our gauge on canvas. Returns null.
+<br/>
+Parameters ;
+<br/><i>CanvasID : </i> ID of a canvas, that we want to draw on.
+<br/><i>newValue : </i> The value of the gauge. It should be percentage and should be between 0 and 100.
+<br/><i>gaugeColor : </i> The color of the gauge in Hex. Default : <font color="#9ECAE1"><b>#9ECAE1</b></font>
+<br/><i>arrowColor : </i> The color of arrow/needle in Hex. Default : #000000 ( black )
+<br/><i>backgroundColor :</i></b> Background color in Hex. Default : #FFFFFF ( white )</i>
+
+<h2>* FAQ </h2>
+<b>Why the design of this page sucks ?</b><br/>
+Because i have no time to design it. If you have better idea and time just make it with html+css and mail me.
+<br/>
+<br/><b>Who the hell are you?</b><br/>
+Short Answer: Aydin "/dev/mach" Ulf.<br/>
+Long Answer : The Wizard of OZ... Or just a person who likes mess with programming, linux, etc...
+<br/>
+<br/><b>How can i reach you ?</b><br/>
+Just send an e-mail to <img src="iletisim.png" style="vertical-align:middle"> ( but if you have a problem with devmachGauge, you are on your own )
+
+</div>   
+<div style="text-align:center; float: left; width: 150px">
+   <canvas id="gauge0" width="100" height="55"></canvas><div id="label0">X</div>   
+   <canvas id="gauge1" width="100" height="55"></canvas><div id="label1">X</div>
+   <canvas id="gauge2" width="100" height="55"></canvas><div id="label2">X</div>
+   <canvas id="gaugeC" width="100" height="55"></canvas><div id="labelC">X</div>   
+   <br/>
+   <button onClick="read()">Read new values !</button></br>
+</div>
+</body>
+</html>
